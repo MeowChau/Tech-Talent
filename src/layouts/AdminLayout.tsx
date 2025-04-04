@@ -1,20 +1,35 @@
-import { Outlet } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
+import { Link, Outlet } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
 
-export default function AdminLayout() {
+const AdminLayout = () => {
+  const { logout } = useAuth();
+
   return (
-    <Layout>
-      <Header>
-        <Menu theme="dark" mode="horizontal" items={[
-          { key: 'dashboard', label: 'Dashboard' },
-          { key: 'jobs', label: 'Quản lý công việc' }
-        ]} />
-      </Header>
-      <Content style={{ padding: '24px' }}>
-        <Outlet />
-      </Content>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible>
+        <Menu theme="dark" mode="inline">
+          <Menu.Item key="dashboard">
+            <Link to="/admin/dashboard">Dashboard</Link>
+          </Menu.Item>
+          <Menu.Item key="jobs">
+            <Link to="/admin/jobs">Quản lý công việc</Link>
+          </Menu.Item>
+          <Menu.Item key="logout" onClick={logout}>
+            Đăng xuất
+          </Menu.Item>
+        </Menu>
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0 }} />
+        <Content style={{ margin: '24px 16px' }}>
+          <Outlet />
+        </Content>
+      </Layout>
     </Layout>
   );
-}
+};
+
+export default AdminLayout;
